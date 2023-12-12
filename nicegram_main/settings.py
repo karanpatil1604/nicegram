@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     # third-party
     'rest_framework',
+    'rest_framework.authtoken',
     'corsheaders',
 
     # local
@@ -50,6 +51,10 @@ INSTALLED_APPS = [
     'followers',
 
 ]
+
+AUTH_TOKEN_CLASSES = (
+    'rest_framework.authtoken.models.Token',
+)
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -136,6 +141,9 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    ),
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.AllowAny',
     ]
