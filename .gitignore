@@ -1,0 +1,62 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Database files
+*.db
+*.sqlite3
+
+# Log files
+*.log
+
+# Static files
+staticfiles/
+
+
+# Secret key
+*.secret
+
+# Environment variables
+.env
+
+# Virtual environment
+venv/
+venv2/
+env/
+env2/
+
+# Temporary files
+*.tmp
+
+# Compiled Python files
+*.pyc
+
+# macOS
+.DS_Store
+
+# Editor-specific files
+.idea/
+.vscode/
+
+# PyCharm
+*.iml
+*.ipr
+*.iws
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+
+# Pipenv
+Pipfile.lock
+
+# Coverage reports
+.coverage
+
+# Translations
+*.mo
+*.pot
+
+# Ignore node_modules
+node_modules/
