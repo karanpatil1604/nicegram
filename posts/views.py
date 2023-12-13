@@ -1,7 +1,7 @@
 from pdb import post_mortem
 from rest_framework.generics import CreateAPIView, UpdateAPIView, DestroyAPIView
 from rest_framework.permissions import IsAuthenticated
-from .serializers import PostSerializer
+from .serializers import PostSerializer, PostUpdateSerializer
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Post
@@ -40,7 +40,7 @@ class PostUpdateView(UpdateAPIView):
         except Post.DoesNotExist:
             return Response({"error": "Post does not exist"}, status=status.HTTP_404_NOT_FOUND)
         if post:
-            serializer = PostSerializer(post, data=request.data)
+            serializer = PostUpdateSerializer(post, data=request.data)
 
         if serializer.is_valid():
             serializer.save()
