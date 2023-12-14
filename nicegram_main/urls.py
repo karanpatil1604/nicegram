@@ -26,7 +26,7 @@ def hello(request):
 
 
 urlpatterns = [
-    path('/', hello, name="homepage"),
+    path('', hello, name="homepage"),
     path('admin/', admin.site.urls),
     path('post/', include('posts.urls')),
     path('user/', include('accounts.urls')),
