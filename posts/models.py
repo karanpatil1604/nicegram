@@ -1,5 +1,3 @@
-
-from email.policy import default
 import os
 from django.conf import settings
 from django.db import models

@@ -1,5 +1,4 @@
 import os
-from pyexpat import model
 import uuid
 from PIL import Image
 from rest_framework import serializers
