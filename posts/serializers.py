@@ -1,9 +1,11 @@
 import os
+from pyexpat import model
 import uuid
 from PIL import Image
 from rest_framework import serializers
 from django.conf import settings
 from rest_framework.fields import empty
+from accounts.serializers import UserFeedSerializer
 
 
 from posts.models import Post
@@ -98,3 +100,11 @@ class PostUpdateSerializer(serializers.ModelSerializer):
         img.save(os.path.join(settings.MEDIA_ROOT, 'posts/pics/', new_filename))
 
         return new_filename
+
+
+class PostWithAuthorSerializer(serializers.ModelSerializer):
+    author = UserFeedSerializer()
+
+    class Meta:
+        model = Post
+        fields = ('post_id', 'caption', 'author', 'picture', 'created')

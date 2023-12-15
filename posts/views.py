@@ -1,10 +1,26 @@
 from pdb import post_mortem
-from rest_framework.generics import CreateAPIView, UpdateAPIView, DestroyAPIView
+from rest_framework.generics import ListAPIView, CreateAPIView, UpdateAPIView, DestroyAPIView
 from rest_framework.permissions import IsAuthenticated
-from .serializers import PostSerializer, PostUpdateSerializer
+
+from accounts.models import User
+from followers.models import Follower
+from .serializers import PostSerializer, PostUpdateSerializer, PostWithAuthorSerializer
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Post
+
+
+class GetFollowerPosts(ListAPIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        following_users = Follower.objects.filter(
+            follower=request.user).values_list('following', flat=True)
+
+        posts = Post.objects.filter(
+            author__in=following_users).order_by('-created')
+        serializer = PostWithAuthorSerializer(posts, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class PostCreateView(CreateAPIView):
@@ -26,8 +42,6 @@ class PostCreateView(CreateAPIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-# if the new image is sent while updating the post
-# delete old from the filesystem and save new
 class PostUpdateView(UpdateAPIView):
     permission_classes = [IsAuthenticated]
 

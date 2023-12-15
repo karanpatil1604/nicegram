@@ -1,8 +1,10 @@
+
+from email.policy import default
 import os
-from typing import Any
 from django.conf import settings
 from django.db import models
 from accounts.models import User
+from django.utils import timezone
 
 
 class Post(models.Model):
@@ -10,6 +12,8 @@ class Post(models.Model):
     picture = models.ImageField(
         upload_to='media/posts/pics/', null=False, blank=False)
     caption = models.TextField()
+    created = models.DateTimeField(
+        default=timezone.now, null=False, blank=False)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def delete(self, *args, **kwargs):
