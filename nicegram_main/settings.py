@@ -167,10 +167,13 @@ REST_FRAMEWORK = {
 CORS_ORIGIN_WHITELIST = (
     'http://localhost:3000',
     'http://localhost:8000',
+    'http://localhost:5173',
+    'https://nicegram-frontend.vercel.app',
 )
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
+    'https://nicegram-frontend.vercel.app',
 ]
 AUTH_USER_MODEL = 'accounts.User'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
