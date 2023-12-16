@@ -169,9 +169,11 @@ CORS_ORIGIN_WHITELIST = (
     'http://localhost:8000',
     'http://localhost:5173',
     'https://nicegram-frontend.vercel.app',
+    'http://nicegram.free.nf',
 )
 
 CORS_ALLOWED_ORIGINS = [
+    'http://nicegram.free.nf',
     "http://localhost:5173",
     'https://nicegram-frontend.vercel.app',
 ]
