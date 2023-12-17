@@ -1,3 +1,4 @@
+from ast import List, Not
 from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.response import Response
@@ -100,14 +101,24 @@ class UserProfileEditView(UpdateAPIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class UserSearchView(APIView):
+class UserSearchView(ListAPIView):
     permission_classes = [IsAuthenticated]
+    queryset = User.objects.all()
 
     def get(self, request):
         query = request.query_params.get('q', '')
+        if not query:
+            return Response([], status=200)
         users = self.search_users(query)
         serialized_users = self.serialize_users(users)
         return Response(serialized_users, status=200)
+
+    # def post(self, request):
+    #     query = request.data.get('q', '')
+    #     print(query, "this is qury")
+    #     users = self.search_users(query)
+    #     serialized_users = self.serialize_users(users)
+    #     return Response(serialized_users, status=200)
 
     def search_users(self, query):
         users = User.objects.filter(
@@ -118,8 +129,8 @@ class UserSearchView(APIView):
         return users
 
     def serialize_users(self, users):
-        serialized_users = [{'id': user.id, 'username': user.username,
-                             'mobile': user.mobile} for user in users]
+        serialized_users = [
+            {'id': user.id, 'username': user.username} for user in users]
         return serialized_users
 
 
@@ -129,11 +140,13 @@ class SuggestedUserView(ListAPIView):
 
     def get(self, request):
         current_user = request.user
-        print('hello', current_user)
-        users_not_followed = User.objects.exclude(
-            id__in=Follower.objects.filter(
-                follower=current_user).values('following__id')
-        )
+        try:
+            users_not_followed = User.objects.exclude(
+                id__in=Follower.objects.filter(
+                    follower=current_user).values('following__id')
+            ).exclude(id=current_user.id)[:8]
+        except:
+            return Response({'message': 'No users to suggest'}, status=status.HTTP_404_NOT_FOUND)
         serializer = UserFeedSerializer(users_not_followed, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
